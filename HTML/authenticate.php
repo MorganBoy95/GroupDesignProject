@@ -38,5 +38,3 @@ if ($stmt = $con->prepare('SELECT staffID, password FROM staff WHERE staffID = ?
 	$stmt->close();
 }
 ?>
-
-
