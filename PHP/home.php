@@ -28,7 +28,7 @@ if (!isset($_SESSION['loggedin'])) {
     <div class="container">
         <div class="row">
             <div class="col">
-                <img src="../GDP Coding/GroupDesignProject/images/logo.png" class="img-fluid" alt="Gadgets4U Logo">
+                <img src="../images/logo.png" class="img-fluid" alt="Gadgets4U Logo">
             </div>
             <div class="col"></div>
         </div>
