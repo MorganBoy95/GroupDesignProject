@@ -28,7 +28,7 @@ if ($stmt = $con->prepare('SELECT staffID, password FROM staff WHERE staffID = ?
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['name'] = $_POST['staffID'];
             $_SESSION['id'] = $staffID;
-            header('Location: home.php');
+            header('Location: ../PHP/home.php');
         } else {
             echo 'Incorrect password!';
         }
