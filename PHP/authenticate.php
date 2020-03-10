@@ -2,9 +2,9 @@
 session_start();
 // Connection Info:
 $DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'purchase_order_system';
+$DATABASE_USER = 'id12874597_admin';
+$DATABASE_PASS = 'admin';
+$DATABASE_NAME = 'id12874597_purchase_order_system';
 
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if ( mysqli_connect_errno() ) {
