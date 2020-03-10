@@ -36,7 +36,9 @@ $stmt->execute();
 
 $stmt->close();
 
-echo "Registration Complete";
-
+echo "<h1>Registration Complete</h1>";
+echo "<a href='../HTML/register.html'>Register Again</a>";
+echo "<br />";
+echo "<a href='../HTML/index.html'>Login</a>";
 
 ?>
