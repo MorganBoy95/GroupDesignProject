@@ -25,16 +25,37 @@ if (!isset($_SESSION['loggedin'])) {
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col">
-                <img src="../images/logo.png" class="img-fluid" alt="Gadgets4U Logo">
+            <div class="col-sm-12">
+                <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
+                <h5 class="text-right"><?php echo $_SESSION['name']?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName']?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['appointment']?></h5>
+                <div class="btn-group float-right" role="group" aria-label="Login Options">
+                    <a href="#" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
+                    <a href="#" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+                
             </div>
-            <div class="col"></div>
         </div>
     </div>
-    <h1>LOGGED IN! Hello, <?php echo $_SESSION['name'] ?></h1>
-    <a href="logout.php" class="btn btn-primary btn-lg">Logout</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Gadgets4U Purchase Order System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="home.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="products.php">Store Stock</a>
+                <a class="nav-item nav-link" href="#">New Purchase Order</a>
+                <a class="nav-item nav-link" href="#">Purchase Order Status</a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">

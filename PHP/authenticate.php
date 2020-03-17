@@ -16,18 +16,22 @@ if ( !isset($_POST['staffID'], $_POST['password']) ) {
 }
 
 // Prepared SQL to stop SQL Injection
-if ($stmt = $con->prepare('SELECT staffID, password FROM staff WHERE staffID = ?')) {
+if ($stmt = $con->prepare('SELECT staffID, password, firstName, lastName, appointment, title FROM staff WHERE staffID = ?')) {
 	$stmt->bind_param('s', $_POST['staffID']);
 	$stmt->execute();
 	$stmt->store_result();
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($staffID, $password);
+        $stmt->bind_result($staffID, $password, $firstName, $lastName, $appointment, $title);
         $stmt->fetch();
         if (password_verify($_POST['password'], $password)) {
             session_regenerate_id();
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['name'] = $_POST['staffID'];
             $_SESSION['id'] = $staffID;
+            $_SESSION['firstName'] = $firstName;
+            $_SESSION['lastName'] = $lastName;
+            $_SESSION['appointment'] = $appointment;
+            $_SESSION['title'] = $title;
             header('Location: ../PHP/home.php');
         } else {
             echo 'Incorrect password!';
