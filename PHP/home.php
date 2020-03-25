@@ -33,8 +33,8 @@ if (!isset($_SESSION['loggedin'])) {
                 <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName']?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment']?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
-                    <a href="#" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="#" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
                     <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
                 

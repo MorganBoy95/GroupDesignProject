@@ -1,5 +1,5 @@
 <?php
-//Include serve connection info
+//Include server connection info
 include "server.php";
 //Ensures user is logged in
 if (!isset($_SESSION['loggedin'])) {
@@ -11,8 +11,6 @@ if (!isset($_SESSION['loggedin'])) {
 $sql = "SELECT `productCode`, `productName`, `productDescription`, `productPhoto`, `amountInStock`, `minStock`, `maxStock` FROM `product`";
 //Execute query and store the result
 $result = $con->query($sql);
-
-//$row = mysqli_fetch_assoc($result);
 
 ?>
 
@@ -43,7 +41,7 @@ $result = $con->query($sql);
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="#" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
                     <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
