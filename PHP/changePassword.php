@@ -61,14 +61,10 @@ if (!isset($_SESSION['loggedin'])) {
         <div class="row">
             <div class="col-sm-12">
                 <h1 class="text-center">Change Your Password</h1>
-                <form action="../PHP/register.php" method="POST">
+                <form action="passChange.php" method="POST">
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="staffID">Staff ID*</label>
                         <input type="text" placeholder="<?php echo $_SESSION['name']?>" name="staffID" class="form-control" id="staffIDReg" readonly>
-                    </div>
-                    <div class="form-group w-25 mx-auto d-block">
-                        <label for="currpass">Current Password*</label>
-                        <input type="password" name="currpass" class="form-control" id="chngPassCurr" required>
                     </div>
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="newpass1">New Password*</label>
