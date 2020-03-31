@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+require "validate.php";
+
 //Define Connection Info
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'id12874597_admin';
@@ -21,17 +24,17 @@ $stmt = $con->prepare("INSERT INTO staff (staffID, title, firstName, lastName, a
 //Bind parameters to variables - in this case there are 7 cases of strings (s)
 $stmt->bind_param("sssssss", $staffID, $title, $firstName, $lastName, $appointment, $departmentID, $password);
 //Set all statement variables to the values obtained from the form using POST
-$staffID = $_POST['staffID'];
-$title = $_POST['title'];
-$firstName = $_POST['firstName'];
-$lastName = $_POST['lastName'];
-$appointment = $_POST['appointment'];
+$staffID = validateInput($_POST['staffID']);
+$title = validateInput($_POST['title']);
+$firstName = validateInput($_POST['firstName']);
+$lastName = validateInput($_POST['lastName']);
+$appointment = validateInput($_POST['appointment']);
 //If the department field is left empty, the value is set to NULL as it is not required
 //If NOTNULL, the departmentID is set to the $_POST value obtained from the 
 if (empty($_POST['department'])) {
     $departmentID = NULL;
 } else {
-    $departmentID = $_POST['department'];
+    $departmentID = validateInput($_POST['department']);
 }
 
 //Hash the password using BCRYPT

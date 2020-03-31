@@ -67,12 +67,16 @@ if (!isset($_SESSION['loggedin'])) {
                         <input type="text" placeholder="<?php echo $_SESSION['name']?>" name="staffID" class="form-control" id="staffIDReg" readonly>
                     </div>
                     <div class="form-group w-25 mx-auto d-block">
+                        <label for="currpass">Current Password*</label>
+                        <input type="password" name="currpass" class="form-control" id="chngPassCurr" required>
+                    </div>
+                    <div class="form-group w-25 mx-auto d-block">
                         <label for="newpass1">New Password*</label>
-                        <input type="password" name="newpass1" class="form-control" id="chngPassNew1" required>
+                        <input type="password" name="newpass1" class="form-control" id="chngPassNew1" pattern=".{8,}" title="8 or more characters" required>
                     </div>
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="newpass2">Retype New Password*</label>
-                        <input type="password" name="newpass2" class="form-control" id="chngPassNew2" required>
+                        <input type="password" name="newpass2" class="form-control" id="chngPassNew2" pattern=".{8,}" title="8 or more characters" required>
                     </div>
                     <button class="btn btn-primary mx-auto d-block"><i class="fas fa-key"></i> Change Password</button>
                 </form>
