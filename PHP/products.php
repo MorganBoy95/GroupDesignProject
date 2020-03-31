@@ -81,6 +81,8 @@ $result = $con->query($sql);
                     <div class="col-sm-12">
                         <div class="card-deck mb-4">
                             <div class='card border-dark'>
+                                <img class= "card-image-top h-20"
+                                style = "width: 100%; height:15vw; object-fit:contain;" src="../images/<?php echo $row['productPhoto']?>" alt="Image of <?php echo $row['productDescription'];?>">
                                 <div class='card-header'>
                                     <h5 class='card-title'><?php echo $row['productCode']; ?></h5>
                                     <h6 class='card-title'><?php echo $row['productName']; ?></h6>
@@ -96,6 +98,8 @@ $result = $con->query($sql);
                         <?php } else { ?>
 
                             <div class='card border-dark'>
+                                <img class= "card-image-top h-20" 
+                                style = "width: 100%; height:15vw; object-fit: contain;" src="../images/<?php echo $row['productPhoto']?>" alt="Image of <?php echo $row['productDescription'];?>">
                                 <div class='card-header'>
                                     <h5 class='card-title'><?php echo $row['productCode']; ?></h5>
                                     <h6 class='card-title'><?php echo $row['productName']; ?></h6>
