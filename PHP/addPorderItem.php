@@ -1,16 +1,17 @@
 <?php
-//Include server connection info
-include "server.php";
-//Ensures user is logged in
+session_start();
+include 'server.php';
+include 'validate.php';
+
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
 }
 
-//Create variable with SQL string attached to it
-$sql = "SELECT `productCode`, `productName`, `productDescription`, `productPhoto`, `amountInStock`, `minStock`, `maxStock` FROM `product`";
-//Execute query and store the result
-$result = $con->query($sql);
+
+$stmt = "SELECT `productCode`, `productName`, `productDescription`, `productPhoto`, `amountInStock`, `minStock`, `maxStock` FROM `product`";
+$result = $con->query($stmt);
+
 
 ?>
 
@@ -28,10 +29,11 @@ $result = $con->query($sql);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>Products</title>
+    <title>Add Purchase Order Item</title>
 </head>
 
 <body>
+
     <div class="container-fluid">
         <div class="row mb-1">
             <div class="col">
@@ -63,9 +65,33 @@ $result = $con->query($sql);
         </div>
     </nav>
 
+    <h1 class="text-center">Select Item and Quantity</h1>
+    <h5 class="text-center">Do not exceed a product's maximum stock level.</h5>
+
+    <form action="quantityCheck.php" method="POST">
+        <div class="form-group w-25 mx-auto d-block">
+            <label for="productIDPorder">Select Product ID*</label>
+            <select name="productIDPorder" id="productIDPorder" class="form-control" required>
+                <?php
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row['productCode'] . "'>" . $row['productCode'] . "</option>";
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-group w-25 mx-auto d-block">
+            <label for="quantityPorder">Quantity</label>
+            <input type="number" id="quantityPorder" name="quantityPorder" min="1" max="100" class="form-control" required>
+        </div>
+        <button class="btn btn-primary mx-auto d-block">Add to Porder</button>
+    </form>
+
+    <br>
+    <br>
 
     <div class="container">
-        <h1 class="text-center">Product Information</h1>
+
+        <?php $result = $con->query($stmt) ?>
 
         <?php $i = 1; ?>
         <?php while ($row = $result->fetch_assoc()) {
@@ -118,7 +144,6 @@ $result = $con->query($sql);
         <?php } ?>
     </div>
 
-
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
@@ -126,6 +151,7 @@ $result = $con->query($sql);
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
+
 </body>
 
 </html>

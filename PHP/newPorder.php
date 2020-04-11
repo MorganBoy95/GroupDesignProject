@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+include "server.php";
+
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
@@ -21,23 +24,22 @@ if (!isset($_SESSION['loggedin'])) {
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>Home Page</title>
+    <title>New Purchase Order</title>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
+<div class="container-fluid">
+        <div class="row mb-1">
+            <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
-                <h5 class="text-right"><?php echo $_SESSION['name']?></h5>
-                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName']?></h5>
-                <h5 class="text-right"><?php echo $_SESSION['appointment']?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
                     <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
                     <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -49,21 +51,25 @@ if (!isset($_SESSION['loggedin'])) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="home.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
-                <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
+                <a class="nav-item nav-link active" href="#">New Purchase Order <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="#">Purchase Order Status</a>
             </div>
         </div>
     </nav>
 
-    <!-- Bootstrap JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+    <div class="container-fluid">
+        <h1 class="text-center">New Purchase Order</h1>
+        <br />
+        <h4 class="text-center"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " ". $_SESSION['lastName'] . " "?> will be responsible for this purchase order, ensure you are logged in as yourself.</h4>
+
+        <form action="createPorder.php" method="post">
+            
+        <input type="submit" name="create" value="Create" class="form-control mx-auto d-block btn btn-primary">
+        </form>
+
+    </div>
 </body>
 
 </html>
