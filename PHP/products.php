@@ -58,7 +58,7 @@ $result = $con->query($sql);
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link active" href="#">Store Stock <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="#">New Purchase Order</a>
+                <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
                 <a class="nav-item nav-link" href="#">Purchase Order Status</a>
             </div>
         </div>
