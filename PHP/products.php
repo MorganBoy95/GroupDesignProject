@@ -1,6 +1,7 @@
 <?php
+session_start();
 //Include server connection info
-include "server.php";
+require "server.php";
 //Ensures user is logged in
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
