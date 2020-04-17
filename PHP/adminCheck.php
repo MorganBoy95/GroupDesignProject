@@ -12,7 +12,7 @@ if ($_SESSION['isAdmin'] === 0) {
     header("refresh: 3; url=viewPorders.php");
     echo "Insufficient Permissions. Redirecting...";
 } else {
-    $_SESSION['activeInspectPorder'] = $_POST['inspectPorder'];
+    $_SESSION['activeInspectPorder'] = $_GET['inspectPorder'];
     header("Location: inspectPorder.php");
 }
 

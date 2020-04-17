@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-$stmt = "SELECT * FROM request";
+$stmt = "SELECT * FROM request ORDER BY requestID DESC";
 $result = $con->query($stmt);
 ?>
 
@@ -21,7 +21,8 @@ $result = $con->query($stmt);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
@@ -35,12 +36,16 @@ $result = $con->query($stmt);
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
                 <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
-                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right">
+                    <?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
-                    <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
-                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <a href="../HTML/register.html" class="btn btn-secondary float-right"><i
+                            class="fas fa-user-plus"></i> Staff Registration Portal</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change
+                        Password</a>
+                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i>
+                        Logout</a>
                 </div>
             </div>
         </div>
@@ -48,7 +53,8 @@ $result = $con->query($stmt);
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Gadgets4U Purchase Order System</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -56,13 +62,26 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="#">Purchase Order Status <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="#">Purchase Order Status <span
+                        class="sr-only">(current)</span></a>
             </div>
         </div>
     </nav>
 
-    <h1 class="text-center">Purchase Orders:</h1>
+    <h1 class="text-center">Requested Purchase Orders:</h1>
     <br>
+    <form action="adminCheck.php" method="GET">
+        <div class="form-group">
+            <label for="inspectPorder">Inspect Porder Request</label>
+            <?php $result = $con->query($stmt)?>
+            <select name="inspectPorder" id="inspectPorder" class="form-control">
+                <?php while ($row = $result->fetch_assoc()) {
+                        echo "<option value = '" . $row['requestID'] . "'>" . $row['requestID'] . "</option>";
+                        }?>
+            </select>
+        </div>
+        <button class="btn btn-primary mx-auto d-block">Inspect</button>
+    </form>
     <div class="container">
         <table class="table mx-3">
             <thead>
@@ -76,7 +95,7 @@ $result = $con->query($stmt);
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
                     <td>" . $row['requestID'] . "</td>
@@ -90,19 +109,6 @@ $result = $con->query($stmt);
                 ?>
             </tbody>
         </table>
-
-        <form action="adminCheck.php" method="POST">
-            <div class="form-group">
-                <label for="inspectPorder">Inspect Porder Request</label>
-                <?php $result = $con->query($stmt)?>
-                <select name="inspectPorder" id="inspectPorder" class="form-control">
-                    <?php while ($row = $result->fetch_assoc()) {
-                        echo "<option value = '" . $row['requestID'] . "'>" . $row['requestID'] . "</option>";
-                        }?>
-                </select>
-            </div>
-            <button class="btn btn-primary mx-auto d-block">Inspect</button>
-        </form>
     </div>
 </body>
 
