@@ -1,5 +1,7 @@
 <?php
 session_start();
+require "validate.php";
+require "server.php";
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
@@ -29,15 +31,15 @@ if (!isset($_SESSION['loggedin'])) {
         <div class="row">
             <div class="col-sm-12">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
-                <h5 class="text-right"><?php echo $_SESSION['name']?></h5>
-                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName']?></h5>
-                <h5 class="text-right"><?php echo $_SESSION['appointment']?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
                     <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
                     <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -56,6 +58,12 @@ if (!isset($_SESSION['loggedin'])) {
             </div>
         </div>
     </nav>
+
+    <div class="container-fluid">
+        <?php $stmt = $con->prepare("SELECT issueText FROM request WHERE staffID = ? AND requestState = 'Issue'");
+        $stmt->bind_param("s", $_SESSION['name']);
+        $stmt->execute(); ?>
+    </div>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
