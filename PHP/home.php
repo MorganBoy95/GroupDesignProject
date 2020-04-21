@@ -54,15 +54,42 @@ if (!isset($_SESSION['loggedin'])) {
                 <a class="nav-item nav-link active" href="home.php">Home <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link" href="#">Purchase Order Status</a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Status</a>
             </div>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <?php $stmt = $con->prepare("SELECT issueText FROM request WHERE staffID = ? AND requestState = 'Issue'");
-        $stmt->bind_param("s", $_SESSION['name']);
-        $stmt->execute(); ?>
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, <?= $_SESSION['firstName']?> <?= $_SESSION['lastName'] ?></h1>
+        <hr class="my-4">
+        <p class="lead">Welcome to the G4U Purchase Order System. To place a new Purchase Order, click here:</p>
+        <p class="lead"><a href="newPorder.php" class="btn btn-primary">New Porder</a></p>
+    </div>
+
+    <div class="container-fluid text-center">
+        <?php $stmt = "SELECT issueText, requestID FROM request WHERE requestState = 'Issue' AND staffID = '" . $_SESSION['name'] . "'";
+        $result = $con->query($stmt);
+        $rowcnt = $result->num_rows;
+        
+        if ($rowcnt > 0 ){?>
+            <h2>You have <?= $rowcnt ?> porders with issues marked against them:</h2>
+            <table class="table mx-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Request ID</th>
+                        <th scope="col">Issue Text</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                            <td>" . $row['requestID'] ."</td>
+                            <td>" . $row['issueText'] . "</td>
+                        </tr>";
+                    }?>
+                </tbody>
+            </table>
+        <?php }?>
     </div>
 
     <!-- Bootstrap JavaScript -->

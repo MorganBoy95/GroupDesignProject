@@ -21,7 +21,7 @@
                 <form action="../PHP/register.php" method="POST">
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="staffID">Staff ID*</label>
-                        <input type="text" name="staffID" class="form-control" id="staffIDReg" required>
+                        <input type="text" name="staffID" class="form-control" id="staffIDReg" pattern="([A-Z])([A-Z])([A-Z])([0-9])([0-9])([0-9])" required>
                     </div>
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="title">Title*</label>
@@ -46,6 +46,11 @@
                     <div class="form-group w-25 mx-auto d-block">
                         <label for="password">Password*</label>
                         <input type="password" name="password" class="form-control" id="passwordReg" required>
+                    </div>
+                    <div class="form-group w-25 mx-auto d-block">
+                        <label class="form-check-label" for="registrationadmin">Admin?</label>
+                        <input type="checkbox" class="form-check-input" name="registrationadmin" id="registrationadmin">
+
                     </div>
                     <button class="btn btn-primary mx-auto d-block">Register</button>
                 </form>

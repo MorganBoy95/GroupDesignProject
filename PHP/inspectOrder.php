@@ -1,14 +1,16 @@
 <?php
 session_start();
-require "server.php";
 require "validate.php";
+require "server.php";
 
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
 }
 
-$stmt = "SELECT * FROM request ORDER BY requestID DESC";
+$_SESSION['currentInspectOrder'] = $_GET['inspectOrder'];
+
+$stmt = "SELECT orderline.productCode, product.productName, orderline.quantity, orderline.delivered FROM orderline INNER JOIN product ON orderline.productCode = product.productCode WHERE orderNumber = " . $_SESSION['currentInspectOrder'];
 $result = $con->query($stmt);
 ?>
 
@@ -26,7 +28,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>View Purchase Order Requests</title>
+    <title>Inspect Order #<?= $_SESSION['currentInspectOrder'] ?></title>
 </head>
 
 <body>
@@ -59,58 +61,49 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="#">Purchase Order Status <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="viewPorders.php">Purchase Order Status <span class="sr-only">(current)</span></a>
             </div>
         </div>
     </nav>
 
-    <h1 class="text-center">Requested Purchase Orders:</h1>
-    <br>
-    <div class="container text-center">
-        <form action="adminCheck.php" method="GET">
-            <div class="form-group">
-                <label for="inspectPorder">Inspect Porder Request</label>
-                <?php $result = $con->query($stmt) ?>
-                <select name="inspectPorder" id="inspectPorder" class="form-control">
-                    <?php while ($row = $result->fetch_assoc()) {
-                        echo "<option value = '" . $row['requestID'] . "'>" . $row['requestID'] . "</option>";
-                    } ?>
-                </select>
-            </div>
-            <button class="btn btn-primary mx-auto d-block">Inspect</button>
-        </form>
-    </div>
-    <br>
-    <br>
-    <div class="container">
-        <table class="table mx-3">
+    <div class="container-fluid text-center">
+        <h1>Order #<?= $_SESSION['currentInspectOrder']?></h1>
+        <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Request ID</th>
-                    <th scope="col">Created By</th>
-                    <th scope="col">Created On</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col">Cost incl. VAT</th>
-                    <th scope="col">Current Status</th>
+                    <th scope="col">Product Code</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Delivered?</th>
                 </tr>
             </thead>
-            <?php $result = $con->query($stmt) ?>
             <tbody>
                 <?php
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                    <td>" . $row['requestID'] . "</td>
-                    <td>" . $row['staffID'] . "</td>
-                    <td>" . $row['date'] . "</td>
-                    <td>" . "£" . $row['subTotal'] . "</td>
-                    <td>" . "£" . $row['totalCost'] . "</td>
-                    <td>" . $row['requestState'] . "</td>
-                    </tr>";
-                }
+                    while ($row = $result->fetch_assoc()) {
+                        if ($row['delivered'] === "1"){
+                            $deliv = "Yes";
+                        } else if ($row['delivered'] === "0") {
+                            $deliv = "No";
+                        }
+                        echo "<tr>
+                        <td>" . $row['productCode'] . "</td>
+                        <td>" . $row['productName'] . "</td>
+                        <td>" . $row['quantity'] . "</td>
+                        <td>" . $deliv . "</td>
+                        </tr>";
+                    }
                 ?>
             </tbody>
         </table>
     </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

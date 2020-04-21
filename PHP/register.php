@@ -2,6 +2,7 @@
 session_start();
 
 require "validate.php";
+require "server.php";
 
 //Define Connection Info
 $DATABASE_HOST = 'localhost';
@@ -20,9 +21,9 @@ if ( !isset($_POST['staffID'], $_POST['title'], $_POST['firstName'], $_POST['las
 }
 
 //Prepare the statement with areas for substitution with variables
-$stmt = $con->prepare("INSERT INTO staff (staffID, title, firstName, lastName, appointment, departmentID, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt = $con->prepare("INSERT INTO staff (staffID, title, firstName, lastName, appointment, departmentID, password, isAdmin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 //Bind parameters to variables - in this case there are 7 cases of strings (s)
-$stmt->bind_param("sssssss", $staffID, $title, $firstName, $lastName, $appointment, $departmentID, $password);
+$stmt->bind_param("sssssssi", $staffID, $title, $firstName, $lastName, $appointment, $departmentID, $password, $isAdmin);
 //Set all statement variables to the values obtained from the form using POST
 $staffID = validateInput($_POST['staffID']);
 $title = validateInput($_POST['title']);
@@ -35,6 +36,12 @@ if (empty($_POST['department'])) {
     $departmentID = NULL;
 } else {
     $departmentID = validateInput($_POST['department']);
+}
+
+if (isset($_POST['registrationadmin'])) {
+    $isAdmin = 1;
+} else {
+    $isAdmin = 0;
 }
 
 //Hash the password using BCRYPT

@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-$stmt = "SELECT * FROM request ORDER BY requestID DESC";
+$stmt = "SELECT * FROM `order` ORDER BY orderNumber DESC";
 $result = $con->query($stmt);
 ?>
 
@@ -26,7 +26,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>View Purchase Order Requests</title>
+    <title>View Purchase Orders</title>
 </head>
 
 <body>
@@ -64,16 +64,16 @@ $result = $con->query($stmt);
         </div>
     </nav>
 
-    <h1 class="text-center">Requested Purchase Orders:</h1>
+    <h1 class="text-center">Purchase Orders:</h1>
     <br>
     <div class="container text-center">
-        <form action="adminCheck.php" method="GET">
+        <form action="inspectOrder.php" method="GET">
             <div class="form-group">
-                <label for="inspectPorder">Inspect Porder Request</label>
+                <label for="inspectOrder">Inspect Porder Request</label>
                 <?php $result = $con->query($stmt) ?>
-                <select name="inspectPorder" id="inspectPorder" class="form-control">
+                <select name="inspectOrder" id="inspectOrder" class="form-control">
                     <?php while ($row = $result->fetch_assoc()) {
-                        echo "<option value = '" . $row['requestID'] . "'>" . $row['requestID'] . "</option>";
+                        echo "<option value = '" . $row['orderNumber'] . "'>" . $row['orderNumber'] . "</option>";
                     } ?>
                 </select>
             </div>
@@ -86,12 +86,14 @@ $result = $con->query($stmt);
         <table class="table mx-3">
             <thead>
                 <tr>
-                    <th scope="col">Request ID</th>
-                    <th scope="col">Created By</th>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Submitted To</th>
                     <th scope="col">Created On</th>
                     <th scope="col">Cost</th>
-                    <th scope="col">Cost incl. VAT</th>
-                    <th scope="col">Current Status</th>
+                    <th scope="col">Order State</th>
+                    <th scope="col">Ordered By</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Shipped On</th>
                 </tr>
             </thead>
             <?php $result = $con->query($stmt) ?>
@@ -99,12 +101,14 @@ $result = $con->query($stmt);
                 <?php
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
-                    <td>" . $row['requestID'] . "</td>
+                    <td>" . $row['orderNumber'] . "</td>
+                    <td>" . $row['supplierID'] . "</td>
+                    <td>" . $row['orderDate'] . "</td>
+                    <td>" . $row['orderTotalCost'] . "</td>
+                    <td>" . $row['orderState'] . "</td>
                     <td>" . $row['staffID'] . "</td>
-                    <td>" . $row['date'] . "</td>
-                    <td>" . "£" . $row['subTotal'] . "</td>
-                    <td>" . "£" . $row['totalCost'] . "</td>
-                    <td>" . $row['requestState'] . "</td>
+                    <td>" . $row['orderState'] . "</td>
+                    <td>" . $row['shippedOn'] . "</td>
                     </tr>";
                 }
                 ?>
