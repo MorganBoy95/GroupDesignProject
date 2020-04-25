@@ -58,7 +58,8 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="#">Purchase Order Status <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
             </div>
         </div>
     </nav>

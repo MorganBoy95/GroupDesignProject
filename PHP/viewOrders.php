@@ -59,7 +59,8 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="#">Purchase Order Status <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link active" href="#"><span class="sr-only">(current)</span> Purchase Orders</a>
             </div>
         </div>
     </nav>
@@ -69,7 +70,7 @@ $result = $con->query($stmt);
     <div class="container text-center">
         <form action="inspectOrder.php" method="GET">
             <div class="form-group">
-                <label for="inspectOrder">Inspect Porder Request</label>
+                <label for="inspectOrder">Inspect Porder</label>
                 <?php $result = $con->query($stmt) ?>
                 <select name="inspectOrder" id="inspectOrder" class="form-control">
                     <?php while ($row = $result->fetch_assoc()) {
@@ -92,7 +93,6 @@ $result = $con->query($stmt);
                     <th scope="col">Cost</th>
                     <th scope="col">Order State</th>
                     <th scope="col">Ordered By</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Shipped On</th>
                 </tr>
             </thead>
@@ -104,10 +104,9 @@ $result = $con->query($stmt);
                     <td>" . $row['orderNumber'] . "</td>
                     <td>" . $row['supplierID'] . "</td>
                     <td>" . $row['orderDate'] . "</td>
-                    <td>" . $row['orderTotalCost'] . "</td>
+                    <td>" . "£" . $row['orderTotalCost'] . "</td>
                     <td>" . $row['orderState'] . "</td>
                     <td>" . $row['staffID'] . "</td>
-                    <td>" . $row['orderState'] . "</td>
                     <td>" . $row['shippedOn'] . "</td>
                     </tr>";
                 }

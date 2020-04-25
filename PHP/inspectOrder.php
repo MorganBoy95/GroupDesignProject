@@ -10,7 +10,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 $_SESSION['currentInspectOrder'] = $_GET['inspectOrder'];
 
-$stmt = "SELECT orderline.productCode, product.productName, orderline.quantity, orderline.delivered FROM orderline INNER JOIN product ON orderline.productCode = product.productCode WHERE orderNumber = " . $_SESSION['currentInspectOrder'];
+$stmt = "SELECT orderline.productCode, product.productName, orderline.quantity, orderline.delivered, orderline.deliveredOn FROM orderline INNER JOIN product ON orderline.productCode = product.productCode WHERE orderNumber = " . $_SESSION['currentInspectOrder'];
 $result = $con->query($stmt);
 ?>
 
@@ -61,7 +61,8 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="viewPorders.php">Purchase Order Status <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
             </div>
         </div>
     </nav>
@@ -75,6 +76,7 @@ $result = $con->query($stmt);
                     <th scope="col">Product Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Delivered?</th>
+                    <th scope="col">Delivered On</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,11 +92,28 @@ $result = $con->query($stmt);
                         <td>" . $row['productName'] . "</td>
                         <td>" . $row['quantity'] . "</td>
                         <td>" . $deliv . "</td>
+                        <td>" . $row['deliveredOn'] . "</td>
                         </tr>";
                     }
                 ?>
             </tbody>
         </table>
+        <a href="markAsShipped.php" class="btn btn-info"><i class="fas fa-shipping-fast"></i> Mark as Shipped</a>
+        <a href="markAllDelivered.php" class="btn btn-success"><i class="fas fa-truck-loading"></i> Mark as All Delivered</a>
+        <a href="deleteOrder.php" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete Order</a>
+
+        <form action="indivDeliv.php" method="GET">
+            <div class="form-group">
+                <label for="indivDeliv">Mark Individual Item as Delivered:</label>
+                <select name="indivDeliv" id="indivDeliv" class="form-control">
+                    <?php $result = $con->query($stmt);
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option name='" . $row['productCode'] . "'>" . $row['productCode'] . "</option>";
+                    } ?>
+                </select>
+                <button class="btn btn-primary"><i class="fas fa-box-alt"></i> Submit</button>
+            </div>
+        </form>
     </div>
 
     <!-- Bootstrap JavaScript -->

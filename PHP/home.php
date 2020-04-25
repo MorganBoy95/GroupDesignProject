@@ -51,16 +51,17 @@ if (!isset($_SESSION['loggedin'])) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="home.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Status</a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
             </div>
         </div>
     </nav>
 
     <div class="jumbotron">
-        <h1 class="display-4">Hello, <?= $_SESSION['firstName']?> <?= $_SESSION['lastName'] ?></h1>
+        <h1 class="display-4">Hello, <?= $_SESSION['firstName'] ?> <?= $_SESSION['lastName'] ?></h1>
         <hr class="my-4">
         <p class="lead">Welcome to the G4U Purchase Order System. To place a new Purchase Order, click here:</p>
         <p class="lead"><a href="newPorder.php" class="btn btn-primary">New Porder</a></p>
@@ -70,8 +71,8 @@ if (!isset($_SESSION['loggedin'])) {
         <?php $stmt = "SELECT issueText, requestID FROM request WHERE requestState = 'Issue' AND staffID = '" . $_SESSION['name'] . "'";
         $result = $con->query($stmt);
         $rowcnt = $result->num_rows;
-        
-        if ($rowcnt > 0 ){?>
+
+        if ($rowcnt > 0) { ?>
             <h2>You have <?= $rowcnt ?> porders with issues marked against them:</h2>
             <table class="table mx-5">
                 <thead>
@@ -83,13 +84,13 @@ if (!isset($_SESSION['loggedin'])) {
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()) {
                         echo "<tr>
-                            <td>" . $row['requestID'] ."</td>
+                            <td>" . $row['requestID'] . "</td>
                             <td>" . $row['issueText'] . "</td>
                         </tr>";
-                    }?>
+                    } ?>
                 </tbody>
             </table>
-        <?php }?>
+        <?php } ?>
     </div>
 
     <!-- Bootstrap JavaScript -->
