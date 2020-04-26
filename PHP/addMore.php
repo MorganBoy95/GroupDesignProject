@@ -9,7 +9,7 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-if(isset($_POST['porderSupplier'])) {
+if (isset($_POST['porderSupplier'])) {
     array_push($_SESSION['suppliers'], $_POST['porderSupplier']);
 }
 
@@ -29,6 +29,7 @@ array_push($_SESSION['costs'], $cost);
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -42,8 +43,9 @@ array_push($_SESSION['costs'], $cost);
 
     <title>Add Another Item?</title>
 </head>
+
 <body>
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row mb-1">
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
@@ -68,8 +70,9 @@ array_push($_SESSION['costs'], $cost);
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
-                <a class="nav-item nav-link active" href="#">New Purchase Order <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="#">Purchase Order Status</a>
+                <a class="nav-item nav-link active" href="newPorder.php">New Purchase Order <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
             </div>
         </div>
     </nav>
@@ -82,6 +85,7 @@ array_push($_SESSION['costs'], $cost);
         <br>
         <a class="btn btn-primary text-center" href="finishPorder.php">Finish Purchase Order</a>
     </div>
-    
+
 </body>
+
 </html>

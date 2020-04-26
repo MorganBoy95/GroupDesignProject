@@ -28,7 +28,7 @@ if (!isset($_SESSION['loggedin'])) {
 </head>
 
 <body>
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row mb-1">
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
@@ -53,8 +53,9 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
-                <a class="nav-item nav-link active" href="#">New Purchase Order <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="#">Purchase Order Status</a>
+                <a class="nav-item nav-link active" href="newPorder.php">New Purchase Order <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
+                <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
             </div>
         </div>
     </nav>
@@ -62,11 +63,11 @@ if (!isset($_SESSION['loggedin'])) {
     <div class="container-fluid">
         <h1 class="text-center">New Purchase Order</h1>
         <br />
-        <h4 class="text-center"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " ". $_SESSION['lastName'] . " "?> will be responsible for this purchase order, ensure you are logged in as yourself.</h4>
+        <h4 class="text-center"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] . " " ?> will be responsible for this purchase order, ensure you are logged in as yourself.</h4>
 
         <form action="createPorder.php" method="post">
-            
-        <input type="submit" name="create" value="Create" class="form-control mx-auto d-block btn btn-primary">
+
+            <input type="submit" name="create" value="Create" class="form-control mx-auto d-block btn btn-primary">
         </form>
 
     </div>
