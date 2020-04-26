@@ -55,6 +55,7 @@ $graph->Stroke("./staffreq.png");
 
 $pdf = new FPDF();
 $pdf->SetTitle("G4U Monthly Report");
+$pdf->SetAuthor($_SESSION['firstName'] . " " . $_SESSION['lastName']);
 $pdf->AddPage();
 $pdf->SetFont("Arial", "B", 16);
 $pdf->Image("../images/logo_sm.png");
@@ -66,4 +67,4 @@ $pdf->Ln();
 $pdf->Cell(0,10, 'Most Requested Product: ' . $mostRequestedProduct);
 $pdf->Ln();
 $pdf->Image("staffreq.png");
-$pdf->Output();
+$pdf->Output("I", "G4U Monthly Report");
