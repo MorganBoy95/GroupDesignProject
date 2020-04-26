@@ -67,4 +67,4 @@ $pdf->Ln();
 $pdf->Cell(0,10, 'Most Requested Product: ' . $mostRequestedProduct);
 $pdf->Ln();
 $pdf->Image("staffreq.png");
-$pdf->Output("I", "G4U Monthly Report");
+$pdf->Output("I", "G4U Monthly Report.pdf");
