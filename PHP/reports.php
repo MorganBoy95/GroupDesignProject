@@ -1,13 +1,12 @@
 <?php
 session_start();
-
-include "server.php";
+require "validate.php";
+require "server.php";
 
 if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +23,7 @@ if (!isset($_SESSION['loggedin'])) {
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>New Purchase Order</title>
+    <title>Reports</title>
 </head>
 
 <body>
@@ -53,25 +52,30 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
-                <a class="nav-item nav-link active" href="newPorder.php">New Purchase Order <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
                 <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
                 <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
-                <a class="nav-item nav-link" href="reports.php">Reports</a>
+                <a class="nav-item nav-link active" href="#">Reports <span class="sr-only">(current)</span></a>
             </div>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <h1 class="text-center">New Purchase Order</h1>
-        <br />
-        <h4 class="text-center"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] . " " ?> will be responsible for this purchase order, ensure you are logged in as yourself.</h4>
-
-        <form action="createPorder.php" method="post">
-
-            <input type="submit" name="create" value="Create" class="form-control mx-auto d-block btn btn-primary">
-        </form>
-
+    <div class="container text-center">
+        <h2>Select a Report to View Below</h2>
+        <h4><i>This will open a PDF viewer in your browser</i></h4>
+        <br>
+        <p><a class="btn btn-primary" href="weeklyReport.php"><i class="fas fa-copy"></i> Weekly Report</a></p>
+        <p><a class="btn btn-primary" href="monthlyReport.php"><i class="fas fa-copy"></i> Monthly Report</a></p>
+        <p><a class="btn btn-primary" href="yearlyReport.php"><i class="fas fa-copy"></i> Yearly Report</a></p>
     </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

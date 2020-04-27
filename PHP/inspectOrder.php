@@ -63,6 +63,7 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
                 <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
                 <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
+                <a class="nav-item nav-link" href="reports.php">Reports</a>
             </div>
         </div>
     </nav>
