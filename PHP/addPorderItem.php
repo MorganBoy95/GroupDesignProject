@@ -118,7 +118,8 @@ $result = $con->query($stmt);
                                     <?php echo $row['productDescription']; ?>
                                 </div>
                                 <div class='card-footer <?php echo $background; ?>'>
-                                    Quantity in Stock: <?php echo $row['amountInStock']; ?>
+                                    <p>Quantity in Stock: <?php echo $row['amountInStock']; ?></p>
+                                    <p>Maximum Stock Level: <?= $row['maxStock']?></p>
                                 </div>
 
                             </div>
@@ -134,7 +135,8 @@ $result = $con->query($stmt);
                                     <?php echo $row['productDescription']; ?>
                                 </div>
                                 <div class='card-footer <?php echo $background; ?>'>
-                                    Quantity in Stock: <?php echo $row['amountInStock'] ?>
+                                    <p>Quantity in Stock: <?php echo $row['amountInStock'] ?></p>
+                                    <p>Maximum Stock Level: <?= $row['maxStock'] ?></p>
                                 </div>
                             </div>
 

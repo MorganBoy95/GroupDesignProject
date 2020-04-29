@@ -7,11 +7,6 @@ if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
 }
-
-$_SESSION['currentInspectOrder'] = $_GET['inspectOrder'];
-
-$stmt = "SELECT orderedproduct.productCode, product.productName, orderedproduct.quantity, orderedproduct.delivered, orderedproduct.deliveredOn FROM orderedproduct INNER JOIN product ON orderedproduct.productCode = product.productCode WHERE orderNumber = " . $_SESSION['currentInspectOrder'];
-$result = $con->query($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +23,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>Inspect Order #<?= $_SESSION['currentInspectOrder'] ?></title>
+    <title>Add a Supplier</title>
 </head>
 
 <body>
@@ -37,15 +32,12 @@ $result = $con->query($stmt);
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
                 <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
-                <h5 class="text-right">
-                    <?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change
-                        Password</a>
-                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i>
-                        Logout</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
         </div>
@@ -68,52 +60,33 @@ $result = $con->query($stmt);
         </div>
     </nav>
 
-    <div class="container-fluid text-center">
-        <h1>Order #<?= $_SESSION['currentInspectOrder']?></h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Product Code</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Delivered?</th>
-                    <th scope="col">Delivered On</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    while ($row = $result->fetch_assoc()) {
-                        if ($row['delivered'] === "1"){
-                            $deliv = "Yes";
-                        } else if ($row['delivered'] === "0") {
-                            $deliv = "No";
-                        }
-                        echo "<tr>
-                        <td>" . $row['productCode'] . "</td>
-                        <td>" . $row['productName'] . "</td>
-                        <td>" . $row['quantity'] . "</td>
-                        <td>" . $deliv . "</td>
-                        <td>" . $row['deliveredOn'] . "</td>
-                        </tr>";
-                    }
-                ?>
-            </tbody>
-        </table>
-        <a href="markAsShipped.php" class="btn btn-info"><i class="fas fa-shipping-fast"></i> Mark as Shipped</a>
-        <a href="markAllDelivered.php" class="btn btn-success"><i class="fas fa-truck-loading"></i> Mark as All Delivered</a>
-        <a href="deleteOrder.php" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete Order</a>
-
-        <form action="indivDeliv.php" method="GET">
+    <div class="container text-center">
+        <form action="supplierToDB.php" method="POST">
             <div class="form-group">
-                <label for="indivDeliv">Mark Individual Item as Delivered:</label>
-                <select name="indivDeliv" id="indivDeliv" class="form-control">
-                    <?php $result = $con->query($stmt);
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option name='" . $row['productCode'] . "'>" . $row['productCode'] . "</option>";
-                    } ?>
-                </select>
-                <button class="btn btn-primary"><i class="fas fa-box-alt"></i> Submit</button>
+                <label for="newSuppID">Supplier ID*</label>
+                <input type="text" name="newSuppID" class="form-control" id="newSuppID" pattern="[A-Z]{1, 3}" required>
             </div>
+            <div class="form-group">
+                <label for="newSuppName">Supplier Name*</label>
+                <input type="text" name="newSuppName" id="newSuppName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="newSuppAdd">Supplier Address*</label>
+                <input type="text" size="100" name="newSuppAdd" id="newSuppAdd" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="newSuppCity">Supplier City*</label>
+                <input type="text" name="newSuppCity" id="newSuppCity" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="newSuppPost">Supplier Postcode*</label>
+                <input type="text" name="newSuppPost" id="newSuppPost" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="newSuppCountry">Supplier Country*</label>
+                <input type="text" class="form-control" name="newSuppCountry" id="newSuppCountry" required>
+            </div>
+            <button class="btn btn-primary">Submit</button>
         </form>
     </div>
 

@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-$stmt = $con->prepare("DELETE FROM orderline WHERE orderNumber = ?");
+$stmt = $con->prepare("DELETE FROM orderedproduct WHERE orderNumber = ?");
 $stmt->bind_param("i", $_SESSION['currentInspectOrder']);
 $stmt->execute();
 $stmt->close();

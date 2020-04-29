@@ -8,13 +8,12 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-$stmt = "SELECT * FROM request ORDER BY requestID DESC";
+$stmt = "SELECT * FROM supplier";
 $result = $con->query($stmt);
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -26,7 +25,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>View Purchase Order Requests</title>
+    <title>Products</title>
 </head>
 
 <body>
@@ -35,15 +34,12 @@ $result = $con->query($stmt);
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
                 <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
-                <h5 class="text-right">
-                    <?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change
-                        Password</a>
-                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i>
-                        Logout</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
         </div>
@@ -59,60 +55,46 @@ $result = $con->query($stmt);
                 <a class="nav-item nav-link" href="home.php">Home</a>
                 <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
-                <a class="nav-item nav-link active" href="#">Purchase Order Requests <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
                 <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
                 <a class="nav-item nav-link" href="reports.php">Reports</a>
             </div>
         </div>
     </nav>
 
-    <h1 class="text-center">Requested Purchase Orders:</h1>
-    <br>
     <div class="container text-center">
-        <form action="inspectPorder.php" method="GET">
-            <div class="form-group">
-                <label for="inspectPorder">Inspect Porder Request</label>
-                <?php $result = $con->query($stmt) ?>
-                <select name="inspectPorder" id="inspectPorder" class="form-control">
-                    <?php while ($row = $result->fetch_assoc()) {
-                        echo "<option value = '" . $row['requestID'] . "'>" . $row['requestID'] . "</option>";
-                    } ?>
-                </select>
-            </div>
-            <button class="btn btn-primary mx-auto d-block">Inspect</button>
-        </form>
-    </div>
-    <br>
-    <br>
-    <div class="container">
-        <table class="table mx-3">
+        <h1>Suppliers</h1>
+        <p><a href="supplierAdd.php" class="btn btn-primary">Add New Supplier</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="newSuppProdForm.php" class="btn btn-primary">New Supplier/Product Interaction</a></p>
+        <br>
+        <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Request ID</th>
-                    <th scope="col">Created By</th>
-                    <th scope="col">Created On</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col">Cost incl. VAT</th>
-                    <th scope="col">Current Status</th>
+                    <th scope="col">Supplier ID</th>
+                    <th scope="col">Supplier Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Postcode</th>
+                    <th scope="col">Country</th>
                 </tr>
             </thead>
-            <?php $result = $con->query($stmt) ?>
             <tbody>
-                <?php
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                    <td>" . $row['requestID'] . "</td>
-                    <td>" . $row['staffID'] . "</td>
-                    <td>" . $row['date'] . "</td>
-                    <td>" . "£" . $row['subTotal'] . "</td>
-                    <td>" . "£" . $row['totalCost'] . "</td>
-                    <td>" . $row['requestState'] . "</td>
-                    </tr>";
-                }
+                <?php 
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                        <td>" . $row['supplierID'] . "</td>
+                        <td>" . $row['name'] . "</td>
+                        <td>" . $row['address'] . "</td>
+                        <td>" . $row['city'] . "</td>
+                        <td>" . $row['postcode'] . "</td>
+                        <td>" . $row['country'] . "</td>
+                        </tr>";
+                    }
                 ?>
             </tbody>
         </table>
     </div>
-</body>
 
+
+    
+</body>
 </html>

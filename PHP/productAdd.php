@@ -1,17 +1,12 @@
 <?php
 session_start();
-require "validate.php";
 require "server.php";
+require "validate.php";
 
 if (!isset($_SESSION['loggedin'])) {
-    header('Location:../HTML/index.html');
+    header ("Location: ../HTML/index.html");
     exit();
 }
-
-$_SESSION['currentInspectOrder'] = $_GET['inspectOrder'];
-
-$stmt = "SELECT orderedproduct.productCode, product.productName, orderedproduct.quantity, orderedproduct.delivered, orderedproduct.deliveredOn FROM orderedproduct INNER JOIN product ON orderedproduct.productCode = product.productCode WHERE orderNumber = " . $_SESSION['currentInspectOrder'];
-$result = $con->query($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +23,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>Inspect Order #<?= $_SESSION['currentInspectOrder'] ?></title>
+    <title>Add a Product</title>
 </head>
 
 <body>
@@ -37,15 +32,12 @@ $result = $con->query($stmt);
             <div class="col">
                 <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
                 <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
-                <h5 class="text-right">
-                    <?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
+                <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
                 <div class="btn-group float-right" role="group" aria-label="Login Options">
                     <a href="../HTML/register.html" class="btn btn-secondary float-right"><i class="fas fa-user-plus"></i> Staff Registration Portal</a>
-                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change
-                        Password</a>
-                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i>
-                        Logout</a>
+                    <a href="changePassword.php" class="btn btn-secondary float-right"><i class="fas fa-cog"></i> Change Password</a>
+                    <a href="logout.php" class="btn btn-primary float-right"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
         </div>
@@ -68,52 +60,50 @@ $result = $con->query($stmt);
         </div>
     </nav>
 
-    <div class="container-fluid text-center">
-        <h1>Order #<?= $_SESSION['currentInspectOrder']?></h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Product Code</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Delivered?</th>
-                    <th scope="col">Delivered On</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    while ($row = $result->fetch_assoc()) {
-                        if ($row['delivered'] === "1"){
-                            $deliv = "Yes";
-                        } else if ($row['delivered'] === "0") {
-                            $deliv = "No";
-                        }
-                        echo "<tr>
-                        <td>" . $row['productCode'] . "</td>
-                        <td>" . $row['productName'] . "</td>
-                        <td>" . $row['quantity'] . "</td>
-                        <td>" . $deliv . "</td>
-                        <td>" . $row['deliveredOn'] . "</td>
-                        </tr>";
-                    }
-                ?>
-            </tbody>
-        </table>
-        <a href="markAsShipped.php" class="btn btn-info"><i class="fas fa-shipping-fast"></i> Mark as Shipped</a>
-        <a href="markAllDelivered.php" class="btn btn-success"><i class="fas fa-truck-loading"></i> Mark as All Delivered</a>
-        <a href="deleteOrder.php" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete Order</a>
-
-        <form action="indivDeliv.php" method="GET">
+    <div class="container text-center">
+        <form action="productToDB.php" method="POST">
             <div class="form-group">
-                <label for="indivDeliv">Mark Individual Item as Delivered:</label>
-                <select name="indivDeliv" id="indivDeliv" class="form-control">
-                    <?php $result = $con->query($stmt);
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option name='" . $row['productCode'] . "'>" . $row['productCode'] . "</option>";
-                    } ?>
-                </select>
-                <button class="btn btn-primary"><i class="fas fa-box-alt"></i> Submit</button>
+                <label for="newProdCode">Product Code*</label>
+                <input type="text" name="newProdCode" id="newProdCode" class="form-control" required>
             </div>
+            <div class="form-group">
+                <label for="newProdName">Product Name*</label>
+                <input type="text" name="newProdName" id="newProdName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="newProdType">Product Type*</label>
+                <select name="newProdType" id="newProdType" class="form-control" required>
+                    <?php  
+                    $stmt = "SELECT productTypeCode FROM producttype";
+                    $result = $con->query($stmt);
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option name='" . $row['productTypeCode'] . "'>" . $row['productTypeCode'] . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="newProdDesc"></label>
+                <textarea name="newProdDesc" id="newProdDesc" cols="30" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="newProdInStck">Amount Currently In Stock*</label>
+                <input type="text" class="form-control" name="newProdInStck" id="newProdInStck" required>
+            </div>
+            <div class="form-group">
+                <label for="newProdImg">Path to Photo*</label>
+                <input type="text" name="newProdImg" class="form-control" id="newProdImg" required>
+            </div>
+            <div class="form-group">
+                <label for="newProdMin">Minimum Stock Level*</label>
+                <input type="text" class="form-control" id="newProdMin" name="newProdMin" required>
+            </div>
+            <div class="form-group">
+                <label for="newProdMax">Maximum Stock Level*</label>
+                <input type="text" name="newProdMax" id="newProdMax" class="form-control" required>
+            </div>
+            <button class="btn btn-primary">Submit</button>
         </form>
     </div>
 

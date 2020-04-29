@@ -8,6 +8,10 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
+if ($_SESSION['isAdmin'] === 0) {
+    header("Location: inspectPorder.php");
+}
+
 $stmt = $con->prepare("SELECT requestState FROM request WHERE requestID = ?");
 $stmt->bind_param("s", $_SESSION['activeInspectPorder']);
 $stmt->execute();

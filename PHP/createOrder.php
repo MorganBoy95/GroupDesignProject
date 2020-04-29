@@ -61,7 +61,7 @@ $stmt->bind_param("di", $totalCost, $_SESSION['currentOrder']);
 $stmt->execute();
 $stmt->close();
 
-$stmt = $con->prepare("INSERT INTO orderline (orderNumber, productCode, quantity) VALUES (?, ?, ?)");
+$stmt = $con->prepare("INSERT INTO orderedproduct (orderNumber, productCode, quantity) VALUES (?, ?, ?)");
 $stmt->bind_param("isi", $_SESSION['currentOrder'], $product, $quant);
 
 foreach ($_SESSION['currentOrderProducts'] as $item) {

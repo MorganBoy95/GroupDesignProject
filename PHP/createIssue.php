@@ -7,6 +7,10 @@ if (!isset($_SESSION['loggedin'])) {
     header('Location:../HTML/index.html');
     exit();
 }
+
+if ($_SESSION['isAdmin'] === 0) {
+    header("Location: inspectPorder.php");
+}
 ?>
 
 <!DOCTYPE html>

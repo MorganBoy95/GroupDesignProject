@@ -1,15 +1,18 @@
 <?php
 session_start();
-require "validate.php";
 require "server.php";
+require "validate.php";
+
 if (!isset($_SESSION['loggedin'])) {
-    header('Location:../HTML/index.html');
+    header("Location: ../HTML/index.html");
     exit();
 }
 
-$_SESSION['activeInspectPorder'] = $_GET['inspectPorder'];
+if ($_SESSION['isAdmin'] === 0) {
+    header("Location: home.php");
+}
 
-$stmt = "SELECT product.productCode, product.productName, requestedproduct.quantity, supplier.name FROM supplier INNER JOIN requestedproduct ON supplier.supplierID = requestedproduct.supplierID INNER JOIN product ON requestedproduct.productCode = product.productCode WHERE requestedproduct.requestID = " . $_SESSION['activeInspectPorder'];
+$stmt = "SELECT staff.staffID, staff.title, staff.firstName, staff.lastName, staff.appointment, department.departmentName, isAdmin FROM staff LEFT JOIN department on staff.departmentID = department.departmentID";
 $result = $con->query($stmt);
 ?>
 
@@ -27,7 +30,7 @@ $result = $con->query($stmt);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>View Purchase Orders</title>
+    <title>Products</title>
 </head>
 
 <body>
@@ -67,54 +70,71 @@ $result = $con->query($stmt);
         </div>
     </nav>
 
-    <div class="container">
-        <h1 class="text-center">Inspecting Contents of Request <?= $_SESSION['activeInspectPorder'] ?></h1>
-        <br />
-        <table class="table mx-3">
+    <div class="container text-center">
+        <h2>Staff List</h2>
+        <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Product Code</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Supplier</th>
+                    <th scope="col">Staff ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">System Admin?</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()) {
+                <?php 
+                
+                while($row = $result->fetch_assoc()) {
+                    if ((int)$row['isAdmin'] === 0) {
+                        $admin = "No";
+                    } else {
+                        $admin = "Yes";
+                    }
                     echo "<tr>
-                    <td>" . $row['productCode'] . "</td>
-                    <td>" . $row['productName'] . "</td>
-                    <td>" . $row['quantity'] . "</td>
-                    <td>" . $row['name'] . "</td>
+                    <td>" . $row['staffID'] . "</td>
+                    <td>" . $row['title'] . " " . $row['firstName'] . " " . $row['lastName'] . "</td>
+                    <td>" . $row['appointment'] . "</td>
+                    <td>" . $row['departmentName'] . "</td>
+                    <td>" . $admin . "</td>
                     </tr>";
                 } ?>
             </tbody>
         </table>
-    </div>
-    <div class="container text-center">
-        <p><a class="btn btn-success" href="./authorisePorder.php"><i class="fas fa-check"></i>
-                Authorise</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-success" href="confirmPorder.php"><i class="fas fa-check-double"></i> Confirm</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-warning" href="createIssue.php"><i class="fas fa-exclamation-triangle"></i> Flag Issue</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" href="closePorder.php"><i class="fas fa-lock"></i> Close Request</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" href="deletePorder.php"><i class="fas fa-trash-alt"></i> Delete</a></p>
-        <p><i>Note: Only delete a purchase order if it was made in error or it is wrong, they should typically be closed
-                so the record is retained. Close a request once an order has been placed for its contained items.</i>
-        </p>
 
-        <?php $stmt = "SELECT DISTINCT supplierID FROM requestedproduct WHERE requestID = " . $_SESSION['activeInspectPorder'];
-        $result = $con->query($stmt); ?>
+        <h2>Departments</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">DepartmentID</th>
+                    <th scope="col">Department Name</th>
+                    <th scope="col">Department Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $stmt = "SELECT department.departmentID, department.departmentName, staff.title, staff.firstName, staff.lastName FROM department LEFT JOIN staff ON department.departmentManager = staff.staffID";
+                    $result = $con->query($stmt);
 
-        <form action="createOrder.php" method="POST">
-            <div class="form-group">
-                <label for="pordersuppliercreate">Select a Supplier in this Purchase Order to Generate an Order to. Please only create an actual order if you are the staff member responsible for this Porder, or you will have to take responsibility for this.</label>
-                <select class="form-control" name="pordersuppliercreate" id="pordersuppliercreate">
-                    <?php while ($row = $result->fetch_assoc()) {
-                        echo "<option name='" . $row['supplierID'] . "'>" . $row['supplierID'] . "</option>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                        <td>" . $row['departmentID'] . "</td>
+                        <td>" . $row['departmentName'] . "</td>
+                        <td>" . $row['title'] . " " . $row['firstName'] . " " . $row['lastName'] . "</td>
+                        </tr>";
                     }
-                    ?>
-                </select>
-            </div>
-            <button class="btn btn-primary">Create Order</button>
-        </form>
+                ?>
+            </tbody>
+        </table>
     </div>
 
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

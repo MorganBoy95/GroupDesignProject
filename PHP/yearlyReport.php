@@ -73,7 +73,7 @@ $stmt->bind_result($orderamount);
 $stmt->fetch();
 $stmt->close();
 
-$stmt = $con->prepare("SELECT COUNT(*) FROM orderline WHERE orderline.deliveredOn BETWEEN (CURDATE() - INTERVAL 1 YEAR) AND CURDATE()");
+$stmt = $con->prepare("SELECT COUNT(*) FROM orderedproduct WHERE orderedproduct.deliveredOn BETWEEN (CURDATE() - INTERVAL 1 YEAR) AND CURDATE()");
 $stmt->execute();
 $stmt->bind_result($delivamount);
 $stmt->fetch();
