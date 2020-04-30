@@ -94,6 +94,17 @@ if (!isset($_SESSION['loggedin'])) {
         <?php } ?>
     </div>
 
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">System Not Working?</h5>
+                <p class="card-text">Contact Lighthouse Support</p>
+                <p class="card-text">Tel: 01632 960321</p>
+                <p class="card-text">Email: support@lighthouse.com</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>

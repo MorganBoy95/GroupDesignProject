@@ -26,11 +26,11 @@ if ($state === 'Pending' || $state === 'Issue') {
     $stmt->execute();
     $stmt->close();
 
-    header("refresh:3;url=inspectPorder.php");
+    header("refresh:3;url=viewPorders.php");
     echo "Successfully Authorised Purchase Order Request #" . $requestID;
     echo "\nRedirecting...";
 } else {
-    header("refresh:3;url=inspectPorder.php");
+    header("refresh:3;url=viewPorders.php");
     echo "The state of this order does not allow authorisation, as this has already occured.";
     echo "\nRedirecting...";
 }

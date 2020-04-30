@@ -8,12 +8,12 @@ if (!isset($_SESSION['loggedin'])) {
     exit();
 }
 
-$stmt = $con->prepare("UPDATE orderline SET delivered = 1, deliveredOn = CURDATE() WHERE orderNumber = ? AND productCode = ?");
+$stmt = $con->prepare("UPDATE orderedproduct SET delivered = 1, deliveredOn = CURDATE() WHERE orderNumber = ? AND productCode = ?");
 $stmt->bind_param("is", $_SESSION['currentInspectOrder'], $_GET['indivDeliv']);
 $stmt->execute();
 $stmt->close();
 
-$stmt = $con->prepare("SELECT quantity FROM orderline WHERE orderNumber = ? AND productCode = ?");
+$stmt = $con->prepare("SELECT quantity FROM orderedproduct WHERE orderNumber = ? AND productCode = ?");
 $stmt->bind_param("is", $_SESSION['currentInspectOrder'], $_GET['indivDeliv']);
 $stmt->execute();
 $stmt->bind_result($quant);
