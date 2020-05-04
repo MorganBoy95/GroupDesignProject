@@ -1,23 +1,24 @@
 <?php
 session_start();
-//Include server connection info
 require "server.php";
-//Ensures user is logged in
+require "validate.php";
+
 if (!isset($_SESSION['loggedin'])) {
-    header('Location:../HTML/index.html');
+    header("Location: ../HTML/index.html");
     exit();
 }
 
-//Create variable with SQL string attached to it
-$sql = "SELECT `productCode`, `productName`, `productDescription`, `productPhoto`, `amountInStock`, `minStock`, `maxStock` FROM `product`";
-//Execute query and store the result
-$result = $con->query($sql);
+$search = "%{$_GET['prodsearch']}%";
+
+$stmt = $con->prepare("SELECT productCode, productName, producttype.productTypeName, productDescription, amountInStock, productPhoto, minStock, maxStock FROM product INNER JOIN producttype ON product.productTypeCode = producttype.productTypeCode WHERE productName LIKE ? OR productCode LIKE ?");
+$stmt->bind_param("ss", $search, $search);
+$stmt->execute();
+$stmt->bind_result($productCode, $productName, $productTypeName, $desc, $inStock, $img, $minStock, $maxStock);
 
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -30,7 +31,7 @@ $result = $con->query($sql);
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
-    <title>Products</title>
+    <title>Product Search Result</title>
 </head>
 
 <body>
@@ -63,7 +64,7 @@ $result = $con->query($sql);
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="home.php">Home</a>
-                <a class="nav-item nav-link active" href="#">Store Stock <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="products.php">Store Stock</a>
                 <a class="nav-item nav-link" href="newPorder.php">New Purchase Order</a>
                 <a class="nav-item nav-link" href="viewPorders.php">Purchase Order Requests</a>
                 <a class="nav-item nav-link" href="viewOrders.php">Purchase Orders</a>
@@ -72,36 +73,16 @@ $result = $con->query($sql);
         </div>
     </nav>
 
-
     <div class="container">
-        <h1 class="text-center">Product Information</h1>
-        <p class="text-center"><a href="autoReorderCost.php" class="btn btn-primary">Auto Reorder, Prioritising
-                Cost</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="autoReorderDeliv.php" class="btn btn-primary">Auto Reorder,
-                Prioritise Delivery</a></p>
-        <p class="text-center"><a href="suppliers.php" class="btn btn-primary">View
-                Suppliers</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="productAdd.php" class="btn btn-primary">Add a
-                Product</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="updateMaxStockForm.php" class="btn btn-primary">Update
-                Item's Maximum Stock Level</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="deleteProdForm.php" class="btn btn-primary">Delete a Product</a>
-        </p>
-        
-        <div class="container text-center">
-            <form action="search.php" method="GET">
-                <div class="form-group">
-                    <input type="text" id="prodsearch" class="form-control" name="prodsearch" required>
-                </div>
-                <button class="btn btn-primary">Search</button>
-            </form>
-        </div>
-
-        <br>
-
+        <h1 class="text-center">Results For: <?=  $_GET['prodsearch'] ?></h1>
         <?php $i = 1; ?>
-        <?php while ($row = $result->fetch_assoc()) {
-            if ((int) $row['amountInStock'] > ((int) $row['minStock'] + 5)) {
+        <?php while ($stmt->fetch()) {
+
+            if ((int)$inStock > ((int) $minStock + 5)) {
                 $background = "bg-success";
-            } elseif ((int) $row['amountInStock'] >= (int) $row['minStock']) {
+            } elseif ((int) $inStock >= (int) $minStock) {
                 $background = "bg-warning";
-            } elseif ((int) $row['amountInStock'] < (int) $row['minStock']) {
+            } elseif ((int) $inStock < (int) $minStock) {
                 $background = "bg-danger";
             } ?>
         <?php if ($i % 2 != 0) { ?>
@@ -110,18 +91,18 @@ $result = $con->query($sql);
                 <div class="card-deck mb-4">
                     <div class='card border-dark'>
                         <img class="card-image-top h-20" style="width: 100%; height:15vw; object-fit:contain;"
-                            src="../images/<?php echo $row['productPhoto'] ?>"
-                            alt="Image of <?php echo $row['productDescription']; ?>">
+                            src="../images/<?php echo $img ?>"
+                            alt="Image of <?php echo $desc; ?>">
                         <div class='card-header'>
-                            <h5 class='card-title'><?php echo $row['productCode']; ?></h5>
-                            <h6 class='card-title'><?php echo $row['productName']; ?></h6>
+                            <h5 class='card-title'><?php echo $productCode; ?> <span class="badge badge-secondary"><?= $productTypeName ?></span></h5>
+                            <h6 class='card-title'><?php echo $productName; ?></h6>
                         </div>
                         <div class='card-body'>
-                            <?php echo $row['productDescription']; ?>
+                            <?php echo $desc; ?>
                         </div>
                         <div class='card-footer <?php echo $background; ?>'>
-                            <p>Quantity in Stock: <?php echo $row['amountInStock']; ?></p>
-                            <p>Maximum Stock Level: <?=$row['maxStock']?></p>
+                            <p>Quantity in Stock: <?php echo $inStock; ?></p>
+                            <p>Maximum Stock Level: <?=$maxStock?></p>
                         </div>
 
                     </div>
@@ -129,18 +110,18 @@ $result = $con->query($sql);
 
                     <div class='card border-dark'>
                         <img class="card-image-top h-20" style="width: 100%; height:15vw; object-fit: contain;"
-                            src="../images/<?php echo $row['productPhoto'] ?>"
-                            alt="Image of <?php echo $row['productDescription']; ?>">
+                            src="../images/<?php echo $img ?>"
+                            alt="Image of <?php echo $desc; ?>">
                         <div class='card-header'>
-                            <h5 class='card-title'><?php echo $row['productCode']; ?></h5>
-                            <h6 class='card-title'><?php echo $row['productName']; ?></h6>
+                            <h5 class='card-title'><?php echo $productCode; ?> <span class="badge badge-secondary"><?= $productTypeName ?></span></h5>
+                            <h6 class='card-title'><?php echo $productName; ?></h6>
                         </div>
                         <div class='card-body'>
-                            <?php echo $row['productDescription']; ?>
+                            <?php echo $desc; ?>
                         </div>
                         <div class='card-footer <?php echo $background; ?>'>
-                            <p>Quantity in Stock: <?php echo $row['amountInStock'] ?></p>
-                            <p>Maximum Stock Level: <?=$row['maxStock']?></p>
+                            <p>Quantity in Stock: <?php echo $inStock ?></p>
+                            <p>Maximum Stock Level: <?=$maxStock?></p>
                         </div>
                     </div>
 
@@ -151,18 +132,6 @@ $result = $con->query($sql);
         <?php $i++; ?>
         <?php } ?>
     </div>
-
-
-    <!-- Bootstrap JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+    
 </body>
-
 </html>
