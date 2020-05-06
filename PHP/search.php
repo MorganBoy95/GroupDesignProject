@@ -10,8 +10,8 @@ if (!isset($_SESSION['loggedin'])) {
 
 $search = "%{$_GET['prodsearch']}%";
 
-$stmt = $con->prepare("SELECT productCode, productName, producttype.productTypeName, productDescription, amountInStock, productPhoto, minStock, maxStock FROM product INNER JOIN producttype ON product.productTypeCode = producttype.productTypeCode WHERE productName LIKE ? OR productCode LIKE ?");
-$stmt->bind_param("ss", $search, $search);
+$stmt = $con->prepare("SELECT productCode, productName, producttype.productTypeName, productDescription, amountInStock, productPhoto, minStock, maxStock FROM product INNER JOIN producttype ON product.productTypeCode = producttype.productTypeCode WHERE productName LIKE ? OR productCode LIKE ? OR producttype.productTypeName LIKE ?");
+$stmt->bind_param("sss", $search, $search, $search);
 $stmt->execute();
 $stmt->bind_result($productCode, $productName, $productTypeName, $desc, $inStock, $img, $minStock, $maxStock);
 

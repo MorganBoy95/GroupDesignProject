@@ -87,6 +87,7 @@ $result = $con->query($sql);
         <div class="container text-center">
             <form action="search.php" method="GET">
                 <div class="form-group">
+                    <label for="prodsearch">Search by Product Name, Product Code or Product Type:</label>
                     <input type="text" id="prodsearch" class="form-control" name="prodsearch" required>
                 </div>
                 <button class="btn btn-primary">Search</button>
