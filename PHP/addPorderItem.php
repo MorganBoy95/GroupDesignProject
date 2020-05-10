@@ -25,7 +25,7 @@ $result = $con->query($stmt);
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="stylesheet.css">
     <!-- Font Awesome Kit Code -->
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
@@ -37,7 +37,9 @@ $result = $con->query($stmt);
     <div class="container-fluid">
         <div class="row mb-1">
             <div class="col">
-                <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
+            <a href="home.php">
+                    <img src="../images/logo_sm.png" class="img-fluid float-left" alt="Gadgets4U Logo">
+                </a>
                 <h5 class="text-right"><?php echo $_SESSION['name'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['title'] . " " . $_SESSION['firstName'] . " " . $_SESSION['lastName'] ?></h5>
                 <h5 class="text-right"><?php echo $_SESSION['appointment'] ?></h5>
@@ -50,7 +52,7 @@ $result = $con->query($stmt);
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Gadgets4U Purchase Order System</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -147,7 +149,81 @@ $result = $con->query($stmt);
             <?php $i++; ?>
         <?php } ?>
     </div>
+<!-- Footer -->
+<footer class="page-footer font-small text-white bg-dark pt-4">
 
+<!-- Footer Links -->
+<div class="container text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+        <!-- Grid column -->
+        <!-- Grid column -->
+        <div class="col-md-2 mx-auto">
+
+            <!-- Links -->
+
+
+            <ul class="list-unstyled">
+                <li>
+                    <a class="disabled" href="home.php" aria-disabled="true">Home</a>
+                </li>
+                <li>
+                    <a class="disabled" href="products.php" aria-disabled="true">Store Stock</a>
+                </li>
+                <li>
+                    <a class="disabled" href="newPorder.php " aria-disabled="true">New Purchase Order</a>
+                </li>
+                <li>
+                    <a class="disabled" href="viewPorders.php" aria-disabled="true">Purcahse Order Requests</a>
+                </li>
+                <li>
+                    <a class="disabled" href="viewOrders.php" aria-disabled="true">Purcahse Order</a>
+                </li>
+                <li>
+                    <a class="disabled" href="reports.php" aria-disabled="true">Reports</a>
+                </li>
+            </ul>
+
+        </div>
+        <!-- Grid column -->
+        <div class="col-md-2 mx-auto">
+            <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Site Map</h5>
+        </div>
+        <!-- Grid column -->
+        <div class="col-md-2 mx-auto">
+
+            <!-- Links -->
+
+
+            <ul class="list-unstyled">
+                <li>
+                    <a href="register.html">Register</a>
+                </li>
+                <li>
+                    <a href="suppliers.php">Suppliers</a>
+                </li>
+                <li>
+                    <a href="productAdd.php">Add Product</a>
+                </li>
+                <li>
+                    <a href="deleteProdForm.php">Delete Product</a>
+                </li>
+            </ul>
+
+        </div>
+
+
+    </div>
+    <!-- Grid row -->
+
+</div>
+<!-- Copyright -->
+<div class="footer-copyright text-center py-3">© 2020 Copyright:
+</div>
+<!-- Copyright -->
+
+</footer>
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>

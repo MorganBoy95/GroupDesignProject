@@ -1,0 +1,12 @@
+.container{
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav a.active {
+    background-color: white;
+    color: black;
+  }
+
+.footer{
+  height: 350px;
+}
