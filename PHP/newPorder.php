@@ -83,6 +83,7 @@ if (!isset($_SESSION['loggedin'])) {
         </form>
 
     </div>
+    <br></br>
     <!-- Footer -->
     <footer class="page-footer font-small text-white bg-dark pt-4">
 
