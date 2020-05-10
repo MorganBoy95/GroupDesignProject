@@ -27,7 +27,7 @@ while ($row = $result->fetch_assoc()) {
     array_push($quantities, $quant);
 }
 
-$stmt = $con->prepare("SELECT supplierID, costInPence FROM productsupplier WHERE productCode = ? ORDER BY deliveryTimeInDays ASC LIMIT 1");
+$stmt = $con->prepare("SELECT supplierID, costInPence FROM productsupplier WHERE productCode = ? ORDER BY deliveryTimeInWorkingDays ASC LIMIT 1");
 $stmt->bind_param("s", $prodCode);
 
 foreach ($codes as $item) {
